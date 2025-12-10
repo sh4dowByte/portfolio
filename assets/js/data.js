@@ -2,9 +2,8 @@
 const skillsData = [
     // ========== Programming ==========
     { category: "Programming", icon: "devicon-php-plain", name: "PHP", percent: 90 },
-    { category: "Programming", icon: "devicon-javascript-plain", name: "JavaScript", percent: 90 },
-    { category: "Programming", icon: "devicon-python-plain", name: "Python", percent: 80 },
-    { category: "Programming", icon: "devicon-html5-plain", name: "HTML", percent: 90 },
+    { category: "Programming", icon: "devicon-javascript-plain", name: "JavaScript", percent: 80 },
+    { category: "Programming", icon: "devicon-python-plain", name: "Python", percent: 70 },
   
     // ========== Frameworks ==========
     { category: "Framework", icon: "devicon-flutter-plain", name: "Flutter", percent: 80 },
@@ -18,24 +17,31 @@ const skillsData = [
     { category: "Database", name: "Mongo DB", percent: 60, custom: "https://upload.wikimedia.org/wikipedia/commons/d/dc/Mongodb-icon.svg" },
   
     // ========== DevOps ==========
-    { category: "DevOps", icon: "devicon-docker-plain", name: "Docker", percent: 75 },
-    { category: "DevOps", icon: "devicon-nginx-original", name: "Nginx", percent: 75 },
+    { category: "DevOps", icon: "devicon-docker-plain", name: "Docker", percent: 80 },
+    { category: "DevOps", icon: "devicon-nginx-original", name: "Nginx", percent: 60 },
     { category: "DevOps", icon: "devicon-git-plain", name: "Git", percent: 85 },
-    { category: "DevOps", icon: "devicon-proxmox-plain", name: "Proxmox", percent: 80 },
+    { category: "DevOps", icon: "devicon-proxmox-plain", name: "Proxmox", percent: 70 },
   
     // ========== Tools ==========
     { category: "Tools", icon: "devicon-vscode-plain", name: "VS Code", percent: 90 },
-    { category: "Tools", name: "Postman", percent: 70, custom: "https://www.svgrepo.com/show/354202/postman-icon.svg" },
+    { category: "Tools", name: "Postman", percent: 90, custom: "https://www.svgrepo.com/show/354202/postman-icon.svg" },
     { category: "Tools", name: "n8n", percent: 80, custom: "https://registry.npmmirror.com/@lobehub/icons-static-png/latest/files/dark/n8n-color.png" },
   
     // ========== System ==========
     { category: "System", name: "Linux", percent: 75, custom: "https://www.svgrepo.com/show/448236/linux.svg" },
-    { category: "System", name: "Mac Os", percent: 85, custom: "https://upload.wikimedia.org/wikipedia/commons/2/22/MacOS_logo_%282017%29.svg" },
+    { category: "System", name: "Mac Os", percent: 90, custom: "https://upload.wikimedia.org/wikipedia/commons/2/22/MacOS_logo_%282017%29.svg" },
   
     // ========== Cloud ==========
     { category: "Cloud", name: "Google Cloud Platform", percent: 50, custom: "https://www.svgrepo.com/show/353805/google-cloud.svg" },
-    { category: "Cloud", name: "Google Play Console", percent: 75, custom: "https://www.svgrepo.com/show/223032/playstore.svg" },
-    { category: "Cloud", name: "App Store", percent: 70, custom: "https://www.svgrepo.com/show/353415/apple-app-store.svg" },
+
+    // ========== App Distribution ==========
+    { category: "App Distribution", name: "Google Play Console", percent: 75, custom: "https://www.svgrepo.com/show/223032/playstore.svg" },
+    { category: "App Distribution", name: "Apple App Store Connect", percent: 70, custom: "https://www.svgrepo.com/show/353415/apple-app-store.svg" },
+    
+    // ========== Tunneling ==========
+    { category: "Tunneling", name: "Cloudflared", percent: 80, custom: "https://www.svgrepo.com/show/349320/cloudflare.svg" },
+    { category: "Tunneling", name: "Tailscale", percent: 80, custom: "https://ugeek.github.io/blog/images-blog/tailscale.png" },
+
   ];
   
   
@@ -273,6 +279,14 @@ const skillsData = [
       title: "SIAPPS ULM",
       tag: "Application Support"
     },
+
+    {
+        category: "",
+        img: "assets/images/porto/marzban.png",
+        link: "https://github.com/sh4dowByte/marzban-nginx",
+        title: "Marzban + Nginx Reverse Proxy in Docker",
+        tag: "Tunneling V2Ray"
+    },
   
     /* === NETWORK SECURITY === */
     {
@@ -295,6 +309,6 @@ const skillsData = [
       link: "https://github.com/sh4dowByte/delta",
       title: "Delta - Exploit Discovery",
       tag: "Network Security Tools"
-    }
+    },
   ];
   

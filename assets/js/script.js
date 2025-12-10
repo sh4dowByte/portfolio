@@ -171,7 +171,7 @@ document.getElementById("skillToggleContainer").onclick = function () {
       iconSkills.style.display = "none";
       barSkills.style.display = "block";
       barSkills.classList.remove("toggle-hide");
-    }, 400);
+    }, 150);
 
   } else {
     barSkills.classList.add("toggle-hide");
@@ -181,7 +181,7 @@ document.getElementById("skillToggleContainer").onclick = function () {
       iconSkills.style.display = "flex";
       iconSkills.style.flexWrap = "wrap";
       iconSkills.classList.remove("toggle-hide");
-    }, 400);
+    }, 150);
   }
 };
 
@@ -315,6 +315,10 @@ function renderCertificates() {
   });
 }
 
+function normalizeCategory(cat) {
+  return cat.toLowerCase().trim();
+}
+
 function renderPortfolio() {
   const container = document.getElementById("projectList");
   container.innerHTML = "";
@@ -401,6 +405,76 @@ renderPortfolio();
 initPortfolioFilter();
 
 
-function normalizeCategory(cat) {
-  return cat.toLowerCase().trim();
-}
+// TARGET tombol Contact
+const contactBtn = [...document.querySelectorAll("[data-nav-link]")]
+  .find(btn => btn.textContent.trim() === "Contact");
+var lat = "";
+var lon = "";
+// EVENT: ketika "Contact" diklik
+contactBtn.addEventListener("click", function () {
+  // Cek apakah browser support lokasi
+  if (navigator.geolocation && lat == '') {
+
+    navigator.geolocation.getCurrentPosition(
+      function(pos) {
+        lat = pos.coords.latitude;
+        lon = pos.coords.longitude;
+
+        // Set ke form hidden
+        document.getElementById("latitude").value = lat;
+        document.getElementById("longitude").value = lon;
+
+        // Update map
+        const url = `https://www.google.com/maps?q=${lat},${lon}&z=15&output=embed`;
+        document.getElementById("mapFrame").src = url;
+
+        console.log("Lokasi berhasil diambil!");
+      },
+
+      function(err) {
+        console.warn("Lokasi tidak dapat diakses:", err);
+
+        // Fallback
+        document.getElementById("mapFrame").src =
+          "https://www.google.com/maps?q=Banjarbaru&z=13&output=embed";
+      }
+    );
+  }
+});
+
+/* ============================
+   AJAX SUBMIT (FETCH API)
+============================ */
+const inputs = form.querySelectorAll("[data-form-input]");
+const submitBtn = form.querySelector("[data-form-btn]");
+const statusText = document.getElementById("formStatus");
+
+form.addEventListener("submit", async function (e) {
+  e.preventDefault(); // Stop page reload
+
+  submitBtn.disabled = true;
+  statusText.textContent = "Sending...";
+
+  const formData = new FormData(form);
+
+  try {
+    const response = await fetch(
+      "https://workflows.juhdi.my.id/webhook/portofolio",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    if (response.ok) {
+      statusText.textContent = "Message sent successfully! ✅";
+      form.reset();
+    } else {
+      statusText.textContent = "Failed to send message! ❌";
+    }
+  } catch (error) {
+    statusText.textContent = "Network error! ❌";
+  }
+
+  submitBtn.disabled = false;
+});
