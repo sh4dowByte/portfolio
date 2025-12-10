@@ -157,3 +157,250 @@ for (let i = 0; i < navigationLinks.length; i++) {
 
   });
 }
+
+// CUSTOM
+const iconSkills = document.getElementById("iconSkills");
+const barSkills = document.getElementById("barSkills");
+
+document.getElementById("skillToggleContainer").onclick = function () {
+  // Hide current
+  if (iconSkills.style.display !== "none") {
+    iconSkills.classList.add("toggle-hide");
+
+    setTimeout(() => {
+      iconSkills.style.display = "none";
+      barSkills.style.display = "block";
+      barSkills.classList.remove("toggle-hide");
+    }, 400);
+
+  } else {
+    barSkills.classList.add("toggle-hide");
+
+    setTimeout(() => {
+      barSkills.style.display = "none";
+      iconSkills.style.display = "flex";
+      iconSkills.style.flexWrap = "wrap";
+      iconSkills.classList.remove("toggle-hide");
+    }, 400);
+  }
+};
+
+function generateSkills() {
+  const iconSkills = document.getElementById("iconSkills");
+  const barSkills = document.getElementById("barSkills");
+
+  // RESET
+  iconSkills.innerHTML = "";
+  barSkills.innerHTML = "";
+
+  // GROUP SKILLS
+  const grouped = {};
+  skillsData.forEach(s => {
+    if (!grouped[s.category]) grouped[s.category] = [];
+    grouped[s.category].push(s);
+  });
+
+  // ================================
+  //  ICON MODE (NO CATEGORY)
+  // ================================
+  skillsData.forEach(skill => {
+    let iconElement;
+
+    if (skill.custom) {
+      iconElement = `
+        <i style="
+          display:inline-block;
+          width:37px;height:37px;
+          background-image:url('${skill.custom}');
+          background-size:contain;
+          background-repeat:no-repeat;
+          background-position:center;
+          margin:4px;
+        "></i>`;
+    } else {
+      iconElement = `
+        <i class="${skill.icon} colored" style="font-size:40px;margin:4px;"></i>`;
+    }
+
+    iconSkills.innerHTML += iconElement;
+  });
+
+
+
+  // ================================
+  //  BAR MODE (CATEGORY + ITEMS)
+  // ================================
+  let categoryIndex = 0;
+  Object.keys(grouped).forEach(category => {
+
+    // CATEGORY TITLE (hanya untuk bar mode)
+    const marginTop = categoryIndex === 0 ? "10px" : "50px";
+
+    barSkills.innerHTML += `
+      <h2 class="skill-category-header" 
+          style="margin-top:${marginTop}; margin-bottom:10px;color:#fff;font-size:16px;">
+        ${category}
+      </h2>
+    `;
+
+    categoryIndex++;
+
+    // LIST SKILL DALAM KATEGORI
+    grouped[category].forEach(skill => {
+      const barItem = `
+        <li class="skills-item">
+          <div class="title-wrapper">
+
+            <h5 class="h5">
+              ${
+                skill.custom
+                  ? `<i style='width:28px;height:28px;background-image:url("${skill.custom}");
+                       background-size:contain;background-repeat:no-repeat;
+                       background-position:center;display:inline-block;margin-right:6px;'></i>`
+                  : `<i class="${skill.icon} colored" style="font-size:28px;margin-right:6px;"></i>`
+              }
+              ${skill.name}
+            </h5>
+
+            <data value="${skill.percent}">${skill.percent}%</data>
+          </div>
+
+          <div class="skill-progress-bg">
+            <div class="skill-progress-fill" style="width:${skill.percent}%;"></div>
+          </div>
+        </li>
+      `;
+
+      barSkills.innerHTML += barItem;
+    });
+
+  });
+}
+
+
+
+function renderCertificates() {
+  const container = document.getElementById("certList");
+
+  certificationData.forEach(cert => {
+    const item = `
+      <li class="blog-post-item">
+        <a target="_blank" href="${cert.pdf}">
+
+          <figure class="blog-banner-box">
+            <img src="${cert.img}" alt="Certification Preview" loading="lazy">
+          </figure>
+
+          <div class="blog-content">
+
+            <div class="blog-meta">
+              <p class="blog-category">${cert.category}</p>
+              <span class="dot"></span>
+              <time datetime="${cert.date}">${cert.dateText}</time>
+            </div>
+
+            <h3 class="h3 blog-item-title">${cert.title}</h3>
+
+            <p class="blog-text">
+              ${cert.desc}
+            </p>
+
+          </div>
+
+        </a>
+      </li>
+    `;
+
+    container.innerHTML += item;
+  });
+}
+
+function renderPortfolio() {
+  const container = document.getElementById("projectList");
+  container.innerHTML = "";
+
+  portfolioData.forEach(p => {
+    const category = normalizeCategory(p.category);
+
+    // Jika ada URL, maka bungkus dengan <a>
+    const wrapperStart = p.link ? `<a target="_blank" href="${p.link}">` : `<div>`;
+    const wrapperEnd   = p.link ? `</a>` : `</div>`;
+
+    // Icon box hanya muncul jika ada link
+    const iconBoxHTML = p.link != '#'
+      ? `<div class="project-item-icon-box">
+           <ion-icon name="eye-outline"></ion-icon>
+         </div>`
+      : ``;
+
+    const item = `
+      <li class="project-item active" data-filter-item data-category="${category}">
+        
+        ${wrapperStart}
+
+          <figure class="project-img">
+            ${iconBoxHTML}
+            <img src="${p.img}" loading="lazy">
+          </figure>
+
+          <h3 class="project-title">${p.title}</h3>
+
+          <p class="project-category">${p.tag}</p>
+
+        ${wrapperEnd}
+
+      </li>
+    `;
+
+    container.innerHTML += item;
+  });
+}
+
+function initPortfolioFilter() {
+  const filterBtns = document.querySelectorAll("[data-filter-btn]");
+  const selectItems = document.querySelectorAll("[data-select-item]");
+  const projects = document.querySelectorAll("[data-filter-item]");
+
+  function filter(category) {
+    const selected = category.toLowerCase();
+
+    projects.forEach(project => {
+      const projectCat = project.dataset.category;
+      if (selected === "all" || projectCat === selected) {
+        project.classList.add("active");
+        project.style.display = "block";
+      } else {
+        project.classList.remove("active");
+        project.style.display = "none";
+      }
+    });
+  }
+
+  /** ============ BUTTON FILTER (TOP MENU) ============ */
+  filterBtns.forEach(btn => {
+    btn.onclick = () => {
+      filterBtns.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      filter(btn.textContent.trim());
+    };
+  });
+
+  /** ============ DROPDOWN FILTER ============ */
+  selectItems.forEach(item => {
+    item.onclick = () => {
+      document.querySelector("[data-selecct-value]").textContent =
+        item.textContent.trim();
+      filter(item.textContent.trim());
+    };
+  });
+}
+
+generateSkills();
+renderCertificates();
+renderPortfolio();
+initPortfolioFilter();
+
+
+function normalizeCategory(cat) {
+  return cat.toLowerCase().trim();
+}
